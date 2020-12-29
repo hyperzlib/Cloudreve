@@ -74,7 +74,7 @@ chmod +x ./cloudreve
 #### 克隆代码
 
 ```shell
-git clone --recurse-submodules https://github.com/cloudreve/Cloudreve.git
+git clone --recurse-submodules https://github.com/hyperzlib/Isekai-Cloudreve.git
 ```
 
 #### 构建静态资源
