@@ -9,16 +9,13 @@
 <h4 align="center">基于Cloudreve开发，支持多家云存储驱动的公有云文件分享系统，专为公开文件分享定制。</h4>
 
 <p align="center">
-  <a href="https://travis-ci.com/github/cloudreve/Cloudreve/">
-    <img src="https://img.shields.io/travis/com/cloudreve/Cloudreve?style=flat-square"
+  <a href="https://travis-ci.com/github/hyperzlib/Isekai-Cloudreve/">
+    <img src="https://img.shields.io/travis/com/hyperzlib/Isekai-Cloudreve?style=flat-square"
          alt="travis">
   </a>
-  <a href="https://codecov.io/gh/cloudreve/Cloudreve"><img src="https://img.shields.io/codecov/c/github/cloudreve/Cloudreve?style=flat-square"></a>
-  <a href="https://goreportcard.com/report/github.com/cloudreve/Cloudreve">
-      <img src="https://goreportcard.com/badge/github.com/cloudreve/Cloudreve?style=flat-square">
-  </a>
-  <a href="https://github.com/cloudreve/Cloudreve/releases">
-    <img src="https://img.shields.io/github/v/release/cloudreve/Cloudreve?include_prereleases&style=flat-square">
+  <a href="https://codecov.io/gh/hyperzlib/Isekai-Cloudreve"><img src="https://img.shields.io/codecov/c/github/cloudreve/Cloudreve?style=flat-square"></a>
+  <a href="https://github.com/hyperzlib/Isekai-Cloudreve/releases">
+    <img src="https://img.shields.io/github/v/release/hyperzlib/Isekai-Cloudreve?include_prereleases&style=flat-square">
   </a>
 </p>
 
