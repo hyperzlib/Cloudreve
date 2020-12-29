@@ -85,3 +85,9 @@ func GetIntSetting(key string, defaultVal int) int {
 	}
 	return res
 }
+
+// GetBoolSetting 获取整形设置值，如果转换失败则返回默认值defaultVal
+func GetBoolSetting(key string) bool {
+	value := GetSettingByName(key)
+	return value != "" && value != "0"
+}

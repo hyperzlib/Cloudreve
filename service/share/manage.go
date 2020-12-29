@@ -28,6 +28,10 @@ type ShareUpdateService struct {
 
 // Delete 删除分享
 func (service *Service) Delete(c *gin.Context, user *model.User) serializer.Response {
+	if !user.Group.OptionsSerialized.ShareModify {
+		return serializer.Err(serializer.CodeNoPermissionErr, "您无权删除分享内容", nil)
+	}
+
 	share := model.GetShareByHashID(c.Param("id"))
 	if share == nil || share.Creator().ID != user.ID {
 		return serializer.Err(serializer.CodeNotFound, "分享不存在", nil)
@@ -42,6 +46,12 @@ func (service *Service) Delete(c *gin.Context, user *model.User) serializer.Resp
 
 // Update 更新分享属性
 func (service *ShareUpdateService) Update(c *gin.Context) serializer.Response {
+	userCtx, _ := c.Get("user")
+	user := userCtx.(*model.User)
+	if !user.Group.OptionsSerialized.ShareModify {
+		return serializer.Err(serializer.CodeNoPermissionErr, "您无权修改分享内容", nil)
+	}
+
 	shareCtx, _ := c.Get("share")
 	share := shareCtx.(*model.Share)
 
@@ -71,6 +81,7 @@ func (service *ShareCreateService) Create(c *gin.Context) serializer.Response {
 	userCtx, _ := c.Get("user")
 	user := userCtx.(*model.User)
 
+	allowModifyShare := user.Group.OptionsSerialized.ShareModify
 	// 是否拥有权限
 	if !user.Group.ShareEnabled {
 		return serializer.Err(serializer.CodeNoPermissionErr, "您无权创建分享链接", nil)
@@ -112,21 +123,52 @@ func (service *ShareCreateService) Create(c *gin.Context) serializer.Response {
 		return serializer.Err(serializer.CodeNotFound, "原始资源不存在", nil)
 	}
 
-	newShare := model.Share{
-		Password:        service.Password,
-		IsDir:           service.IsDir,
-		UserID:          user.ID,
-		SourceID:        sourceID,
-		RemainDownloads: -1,
-		PreviewEnabled:  service.Preview,
-		SourceName:      sourceName,
+	if !allowModifyShare {
+		//禁止修改的情况，如果存在分享就直接返回
+		share := model.GetShareBySource(sourceID, user.ID)
+		if share != nil {
+			// 返回现有分享
+			uid := hashid.HashID(share.ID, hashid.ShareID)
+			// 最终得到分享链接
+			siteURL := model.GetSiteURL()
+			sharePath, _ := url.Parse("/s/" + uid)
+			shareURL := siteURL.ResolveReference(sharePath)
+
+			return serializer.Response{
+				Code: 0,
+				Data: shareURL.String(),
+			}
+		}
 	}
 
-	// 如果开启了自动过期
-	if service.RemainDownloads > 0 {
-		expires := time.Now().Add(time.Duration(service.Expire) * time.Second)
-		newShare.RemainDownloads = service.RemainDownloads
-		newShare.Expires = &expires
+	var newShare model.Share
+	if allowModifyShare {
+		newShare = model.Share{
+			Password:        service.Password,
+			IsDir:           service.IsDir,
+			UserID:          user.ID,
+			SourceID:        sourceID,
+			RemainDownloads: -1,
+			PreviewEnabled:  service.Preview,
+			SourceName:      sourceName,
+		}
+
+		// 如果开启了自动过期
+		if service.RemainDownloads > 0 {
+			expires := time.Now().Add(time.Duration(service.Expire) * time.Second)
+			newShare.RemainDownloads = service.RemainDownloads
+			newShare.Expires = &expires
+		}
+	} else {
+		newShare = model.Share{
+			Password:        "",
+			IsDir:           service.IsDir,
+			UserID:          user.ID,
+			SourceID:        sourceID,
+			RemainDownloads: -1,
+			PreviewEnabled:  true,
+			SourceName:      sourceName,
+		}
 	}
 
 	// 创建分享

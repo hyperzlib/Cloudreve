@@ -1,8 +1,9 @@
 package onedrive
 
 import (
-	model "github.com/cloudreve/Cloudreve/v3/models"
 	"testing"
+
+	model "github.com/cloudreve/Cloudreve/v3/models"
 )
 
 func TestDriver_replaceSourceHost(t *testing.T) {

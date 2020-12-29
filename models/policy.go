@@ -47,6 +47,8 @@ type PolicyOption struct {
 	FileType []string `json:"file_type"`
 	// MimeType
 	MimeType string `json:"mimetype"`
+	// 自定义Callback用的BaseURL
+	CallbackBaseURL string `json:"callback_base_url"`
 	// OdRedirect Onedrive 重定向地址
 	OdRedirect string `json:"od_redirect,omitempty"`
 	// OdProxy Onedrive 反代地址
@@ -266,6 +268,19 @@ func (policy *Policy) GetUploadURL() string {
 	}
 
 	return server.ResolveReference(controller).String()
+}
+
+// GetBaseURL 获取BaseURL
+func (policy *Policy) GetBaseURL() *url.URL {
+	if policy.OptionsSerialized.CallbackBaseURL == "" {
+		return GetSiteURL()
+	}
+
+	base, err := url.Parse(policy.OptionsSerialized.CallbackBaseURL)
+	if err != nil {
+		base, _ = url.Parse("https://cloudreve.org")
+	}
+	return base
 }
 
 // UpdateAccessKey 更新 AccessKey

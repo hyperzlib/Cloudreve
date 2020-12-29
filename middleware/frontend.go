@@ -1,13 +1,14 @@
 package middleware
 
 import (
+	"io/ioutil"
+	"net/http"
+	"strings"
+
 	"github.com/cloudreve/Cloudreve/v3/bootstrap"
 	model "github.com/cloudreve/Cloudreve/v3/models"
 	"github.com/cloudreve/Cloudreve/v3/pkg/util"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
-	"net/http"
-	"strings"
 )
 
 // FrontendFileHandler 前端静态文件处理

@@ -27,6 +27,7 @@ const (
 type User struct {
 	// 表字段
 	gorm.Model
+	UserName  string `gorm:"type:varchar(60);unique_index"`
 	Email     string `gorm:"type:varchar(100);unique_index"`
 	Nick      string `gorm:"size:50"`
 	Password  string `json:"-"`
@@ -142,6 +143,21 @@ func GetUserByEmail(email string) (User, error) {
 	var user User
 	result := DB.Set("gorm:auto_preload", true).Where("status = ? and email = ?", Active, email).First(&user)
 	return user, result.Error
+}
+
+// GetUserByUsername 通过用户名获取用户
+func GetUserByUsername(username string) (User, error) {
+	var user User
+	result := DB.Set("gorm:auto_preload", true).Where("status = ? and user_name = ?", Active, username).First(&user)
+	return user, result.Error
+}
+
+// GetUserByLoginIdentity 通过登录凭证（用户名/邮箱）获取用户
+func GetUserByLoginIdentity(identity string) (User, error) {
+	if strings.Contains(identity, "@") {
+		return GetUserByEmail(identity)
+	}
+	return GetUserByUsername(identity)
 }
 
 // NewUser 返回一个新的空 User

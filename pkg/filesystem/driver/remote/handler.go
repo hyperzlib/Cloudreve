@@ -296,7 +296,7 @@ func (handler Driver) Source(
 // Token 获取上传策略和认证Token
 func (handler Driver) Token(ctx context.Context, TTL int64, key string) (serializer.UploadCredential, error) {
 	// 生成回调地址
-	siteURL := model.GetSiteURL()
+	siteURL := handler.Policy.GetBaseURL()
 	apiBaseURI, _ := url.Parse("/api/v3/callback/remote/" + key)
 	apiURL := siteURL.ResolveReference(apiBaseURI)
 

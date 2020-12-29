@@ -13,7 +13,8 @@ import (
 func ParamErrorMsg(filed string, tag string) string {
 	// 未通过验证的表单域与中文对应
 	fieldMap := map[string]string{
-		"UserName": "邮箱",
+		"UserName": "用户名",
+		"Email":    "邮箱",
 		"Password": "密码",
 		"Path":     "路径",
 		"SourceID": "原始资源",
@@ -26,6 +27,7 @@ func ParamErrorMsg(filed string, tag string) string {
 		"min":      "太短",
 		"max":      "太长",
 		"email":    "格式不正确",
+		"username": "不能包含@",
 	}
 	fieldVal, findField := fieldMap[filed]
 	tagVal, findTag := tagMap[tag]

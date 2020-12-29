@@ -106,6 +106,7 @@ func (service *AddUserService) Add() serializer.Response {
 
 		// 只更新必要字段
 		user.Nick = service.User.Nick
+		user.UserName = service.User.UserName
 		user.Email = service.User.Email
 		user.GroupID = service.User.GroupID
 		user.Status = service.User.Status

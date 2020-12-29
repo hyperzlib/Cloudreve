@@ -2,7 +2,6 @@ package user
 
 import (
 	"net/url"
-	"strings"
 	"time"
 
 	model "github.com/cloudreve/Cloudreve/v3/models"
@@ -19,8 +18,9 @@ import (
 // UserRegisterService 管理用户注册的服务
 type UserRegisterService struct {
 	//TODO 细致调整验证规则
-	UserName    string `form:"userName" json:"userName" binding:"required,email"`
-	Password    string `form:"Password" json:"Password" binding:"required,min=4,max=64"`
+	UserName    string `form:"username" json:"username" binding:"required,excludes=@"`
+	Email       string `form:"email" json:"email" binding:"required,email"`
+	Password    string `form:"password" json:"password" binding:"required,min=4,max=64"`
 	CaptchaCode string `form:"captchaCode" json:"captchaCode"`
 }
 
@@ -56,8 +56,9 @@ func (service *UserRegisterService) Register(c *gin.Context) serializer.Response
 
 	// 创建新的用户对象
 	user := model.NewUser()
-	user.Email = service.UserName
-	user.Nick = strings.Split(service.UserName, "@")[0]
+	user.UserName = service.UserName
+	user.Email = service.Email
+	user.Nick = service.UserName
 	user.SetPassword(service.Password)
 	user.Status = model.Active
 	if isEmailRequired {

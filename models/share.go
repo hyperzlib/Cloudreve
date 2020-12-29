@@ -42,6 +42,17 @@ func (share *Share) Create() (uint, error) {
 	return share.ID, nil
 }
 
+// GetShareBySource 根据Source查找分享
+func GetShareBySource(SourceID uint, UserID uint) *Share {
+	var share Share
+	result := DB.Where("source_id = ? and user_id = ?", SourceID, UserID).First(&share)
+	if result.Error != nil {
+		return nil
+	}
+
+	return &share
+}
+
 // GetShareByHashID 根据HashID查找分享
 func GetShareByHashID(hashID string) *Share {
 	id, err := hashid.DecodeHashID(hashID, hashid.ShareID)

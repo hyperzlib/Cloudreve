@@ -170,6 +170,8 @@ Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; verti
 		{Name: "pwa_display", Value: "standalone", Type: "pwa"},
 		{Name: "pwa_theme_color", Value: "#000000", Type: "pwa"},
 		{Name: "pwa_background_color", Value: "#ffffff", Type: "pwa"},
+		{Name: "public_share", Value: "0", Type: "share"},
+		{Name: "auto_share", Value: "0", Type: "share"},
 	}
 
 	for _, value := range defaultSettings {
@@ -191,6 +193,7 @@ func addDefaultGroups() {
 				ArchiveDownload: true,
 				ArchiveTask:     true,
 				ShareDownload:   true,
+				ShareModify:     true,
 				Aria2:           true,
 			},
 		}
@@ -211,6 +214,7 @@ func addDefaultGroups() {
 			WebDAVEnabled: true,
 			OptionsSerialized: GroupOption{
 				ShareDownload: true,
+				ShareModify:   true,
 			},
 		}
 		if err := DB.Create(&defaultAdminGroup).Error; err != nil {
@@ -243,6 +247,7 @@ func addDefaultUser() {
 	// 未找到初始用户时，则创建
 	if gorm.IsRecordNotFoundError(err) {
 		defaultUser := NewUser()
+		defaultUser.UserName = "admin"
 		defaultUser.Email = "admin@cloudreve.org"
 		defaultUser.Nick = "admin"
 		defaultUser.Status = Active
@@ -256,7 +261,7 @@ func addDefaultUser() {
 		}
 
 		c := color.New(color.FgWhite).Add(color.BgBlack).Add(color.Bold)
-		util.Log().Info("初始管理员账号：" + c.Sprint("admin@cloudreve.org"))
+		util.Log().Info("初始管理员账号：" + c.Sprint("admin"))
 		util.Log().Info("初始管理员密码：" + c.Sprint(password))
 	}
 }

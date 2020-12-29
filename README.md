@@ -2,11 +2,11 @@
   <br>
   <a href="https://cloudreve.org/" alt="logo" ><img src="https://raw.githubusercontent.com/cloudreve/frontend/master/public/static/img/logo192.png" width="150"/></a>
   <br>
-  Cloudreve
+  Cloudreve 异世界百科修改版
   <br>
 </h1>
 
-<h4 align="center">支持多家云存储驱动的公有云文件系统.</h4>
+<h4 align="center">基于Cloudreve开发，支持多家云存储驱动的公有云文件分享系统，专为公开文件分享定制。</h4>
 
 <p align="center">
   <a href="https://travis-ci.com/github/cloudreve/Cloudreve/">
@@ -23,11 +23,9 @@
 </p>
 
 <p align="center">
-  <a href="https://demo.cloudreve.org">演示站</a> •
-  <a href="https://forum.cloudreve.org/">讨论社区</a> •
-  <a href="https://docs.cloudreve.org/">文档</a> •
-  <a href="https://github.com/cloudreve/Cloudreve/releases">下载</a> •
-  <a href="https://t.me/cloudreve_official">Telegram 群组</a> •
+  <a href="https://demo.cloudreve.org">Cloudreve原版演示站</a> •
+  <a href="https://forum.cloudreve.org/">Cloudreve原版讨论社区</a> •
+  <a href="https://docs.cloudreve.org/">Cloudreve原版文档</a> •
   <a href="#scroll-许可证">许可证</a>
 </p>
 
@@ -48,6 +46,12 @@
 * :art: 自定义配色、黑暗模式、PWA 应用、全站单页应用
 * :rocket: All-In-One 打包，开箱即用
 * 🌈 ... ...
+
+### 异世界百科版新增内容
+* 添加用户名（与原版不能合并的分歧点）
+* 添加“自动创建分享”设置
+* 添加“修改分享”权限设置
+* 允许设置OSS等第三方应用回调使用的URL
 
 ## :hammer_and_wrench: 部署
 

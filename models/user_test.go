@@ -15,8 +15,8 @@ func TestGetUserByID(t *testing.T) {
 	asserts := assert.New(t)
 	cache.Deletes([]string{"1"}, "policy_")
 	//找到用户时
-	userRows := sqlmock.NewRows([]string{"id", "deleted_at", "email", "options", "group_id"}).
-		AddRow(1, nil, "admin@cloudreve.org", "{}", 1)
+	userRows := sqlmock.NewRows([]string{"id", "deleted_at", "user_name", "email", "options", "group_id"}).
+		AddRow(1, nil, "admin", "admin@cloudreve.org", "{}", 1)
 	mock.ExpectQuery("^SELECT (.+)").WillReturnRows(userRows)
 
 	groupRows := sqlmock.NewRows([]string{"id", "name", "policies"}).
@@ -34,9 +34,10 @@ func TestGetUserByID(t *testing.T) {
 			ID:        1,
 			DeletedAt: nil,
 		},
-		Email:   "admin@cloudreve.org",
-		Options: "{}",
-		GroupID: 1,
+		UserName: "admin",
+		Email:    "admin@cloudreve.org",
+		Options:  "{}",
+		GroupID:  1,
 		Group: Group{
 			Model: gorm.Model{
 				ID: 1,
@@ -67,8 +68,8 @@ func TestGetActiveUserByID(t *testing.T) {
 	asserts := assert.New(t)
 	cache.Deletes([]string{"1"}, "policy_")
 	//找到用户时
-	userRows := sqlmock.NewRows([]string{"id", "deleted_at", "email", "options", "group_id"}).
-		AddRow(1, nil, "admin@cloudreve.org", "{}", 1)
+	userRows := sqlmock.NewRows([]string{"id", "deleted_at", "user_name", "email", "options", "group_id"}).
+		AddRow(1, nil, "admin", "admin@cloudreve.org", "{}", 1)
 	mock.ExpectQuery("^SELECT (.+)").WillReturnRows(userRows)
 
 	groupRows := sqlmock.NewRows([]string{"id", "name", "policies"}).
@@ -86,9 +87,10 @@ func TestGetActiveUserByID(t *testing.T) {
 			ID:        1,
 			DeletedAt: nil,
 		},
-		Email:   "admin@cloudreve.org",
-		Options: "{}",
-		GroupID: 1,
+		UserName: "admin",
+		Email:    "admin@cloudreve.org",
+		Options:  "{}",
+		GroupID:  1,
 		Group: Group{
 			Model: gorm.Model{
 				ID: 1,

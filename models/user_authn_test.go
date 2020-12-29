@@ -1,11 +1,12 @@
 package model
 
 import (
+	"testing"
+
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/duo-labs/webauthn/webauthn"
 	"github.com/jinzhu/gorm"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestUser_RegisterAuthn(t *testing.T) {
@@ -74,8 +75,9 @@ func TestUser_WebAuthnID(t *testing.T) {
 func TestUser_WebAuthnName(t *testing.T) {
 	asserts := assert.New(t)
 	user := User{
-		Model: gorm.Model{ID: 1},
-		Email: "abslant@foxmail.com",
+		Model:    gorm.Model{ID: 1},
+		UserName: "abslant",
+		Email:    "abslant@foxmail.com",
 	}
 	{
 		name := user.WebAuthnName()

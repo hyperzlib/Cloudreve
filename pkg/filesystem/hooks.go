@@ -309,8 +309,13 @@ func GenericAfterUpload(ctx context.Context, fs *FileSystem) error {
 		return ErrFileExisted
 	}
 
+	var (
+		err  error
+		file *model.File
+	)
+
 	// 向数据库中插入记录
-	file, err := fs.AddFile(ctx, folder)
+	file, err = fs.AddFile(ctx, folder)
 	if err != nil {
 		return ErrInsertFileRecord
 	}
@@ -323,6 +328,25 @@ func GenericAfterUpload(ctx context.Context, fs *FileSystem) error {
 			defer fs.recycleLock.Unlock()
 			fs.GenerateThumbnail(ctx, file)
 		}()
+	}
+
+	if model.GetBoolSetting("auto_share") {
+		// 自动生成分享
+		newShare := model.Share{
+			Password:        "",
+			IsDir:           false,
+			UserID:          fs.User.ID,
+			SourceID:        file.ID,
+			RemainDownloads: -1,
+			PreviewEnabled:  true,
+			SourceName:      file.Name,
+		}
+
+		// 创建分享
+		_, err = newShare.Create()
+		if err != nil {
+			util.Log().Error("分享链接创建失败: %s", err)
+		}
 	}
 
 	return nil

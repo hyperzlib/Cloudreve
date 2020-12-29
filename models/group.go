@@ -2,6 +2,7 @@ package model
 
 import (
 	"encoding/json"
+
 	"github.com/jinzhu/gorm"
 )
 
@@ -29,6 +30,7 @@ type GroupOption struct {
 	DecompressSize  uint64                 `json:"decompress_size,omitempty"`
 	OneTimeDownload bool                   `json:"one_time_download,omitempty"`
 	ShareDownload   bool                   `json:"share_download,omitempty"`
+	ShareModify     bool                   `json:"share_modify,omitempty"`
 	Aria2           bool                   `json:"aria2,omitempty"`         // 离线下载
 	Aria2Options    map[string]interface{} `json:"aria2_options,omitempty"` // 离线下载用户组配置
 }

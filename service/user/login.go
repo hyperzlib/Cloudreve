@@ -20,20 +20,20 @@ import (
 // UserLoginService 管理用户登录的服务
 type UserLoginService struct {
 	//TODO 细致调整验证规则
-	UserName    string `form:"userName" json:"userName" binding:"required,email"`
-	Password    string `form:"Password" json:"Password" binding:"required,min=4,max=64"`
+	UserName    string `form:"username" json:"username" binding:"required"`
+	Password    string `form:"password" json:"password" binding:"required,min=4,max=64"`
 	CaptchaCode string `form:"captchaCode" json:"captchaCode"`
 }
 
 // UserResetEmailService 发送密码重设邮件服务
 type UserResetEmailService struct {
-	UserName    string `form:"userName" json:"userName" binding:"required,email"`
+	Email       string `form:"email" json:"email" binding:"required,email"`
 	CaptchaCode string `form:"captchaCode" json:"captchaCode"`
 }
 
 // UserResetService 密码重设服务
 type UserResetService struct {
-	Password string `form:"Password" json:"Password" binding:"required,min=4,max=64"`
+	Password string `form:"password" json:"password" binding:"required,min=4,max=64"`
 	ID       string `json:"id" binding:"required"`
 	Secret   string `json:"secret" binding:"required"`
 }
@@ -92,7 +92,7 @@ func (service *UserResetEmailService) Reset(c *gin.Context) serializer.Response 
 	}
 
 	// 查找用户
-	if user, err := model.GetUserByEmail(service.UserName); err == nil {
+	if user, err := model.GetUserByEmail(service.Email); err == nil {
 
 		// 创建密码重设会话
 		secret := util.RandStringRunes(32)
@@ -148,7 +148,7 @@ func (service *UserLoginService) Login(c *gin.Context) serializer.Response {
 	isCaptchaRequired := model.GetSettingByName("login_captcha")
 	useRecaptcha := model.GetSettingByName("captcha_IsUseReCaptcha")
 	recaptchaSecret := model.GetSettingByName("captcha_ReCaptchaSecret")
-	expectedUser, err := model.GetUserByEmail(service.UserName)
+	expectedUser, err := model.GetUserByLoginIdentity(service.UserName)
 
 	if (model.IsTrueVal(isCaptchaRequired)) && !(model.IsTrueVal(useRecaptcha)) {
 		// TODO 验证码校验
@@ -171,10 +171,10 @@ func (service *UserLoginService) Login(c *gin.Context) serializer.Response {
 
 	// 一系列校验
 	if err != nil {
-		return serializer.Err(serializer.CodeCredentialInvalid, "用户邮箱或密码错误", err)
+		return serializer.Err(serializer.CodeCredentialInvalid, "用户不存在", err)
 	}
 	if authOK, _ := expectedUser.CheckPassword(service.Password); !authOK {
-		return serializer.Err(serializer.CodeCredentialInvalid, "用户邮箱或密码错误", nil)
+		return serializer.Err(serializer.CodeCredentialInvalid, "密码错误", nil)
 	}
 	if expectedUser.Status == model.Baned || expectedUser.Status == model.OveruseBaned {
 		return serializer.Err(403, "该账号已被封禁", nil)

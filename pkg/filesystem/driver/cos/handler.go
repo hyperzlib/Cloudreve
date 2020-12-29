@@ -332,7 +332,7 @@ func (handler Driver) Token(ctx context.Context, TTL int64, key string) (seriali
 	}
 
 	// 生成回调地址
-	siteURL := model.GetSiteURL()
+	siteURL := handler.Policy.GetBaseURL()
 	apiBaseURI, _ := url.Parse("/api/v3/callback/cos/" + key)
 	apiURL := siteURL.ResolveReference(apiBaseURI).String()
 

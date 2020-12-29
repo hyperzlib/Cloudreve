@@ -2,16 +2,17 @@ package middleware
 
 import (
 	"errors"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"testing"
+
 	"github.com/cloudreve/Cloudreve/v3/bootstrap"
 	"github.com/cloudreve/Cloudreve/v3/pkg/cache"
 	"github.com/cloudreve/Cloudreve/v3/pkg/util"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	testMock "github.com/stretchr/testify/mock"
-	"net/http"
-	"net/http/httptest"
-	"os"
-	"testing"
 )
 
 type StaticMock struct {

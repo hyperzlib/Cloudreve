@@ -526,9 +526,10 @@ func InitMasterRouter() *gin.Engine {
 					controllers.UpdateShare,
 				)
 				// 删除分享
-				share.DELETE(":id",
+				// 不准删除
+				/*share.DELETE(":id",
 					controllers.DeleteShare,
-				)
+				)*/
 			}
 
 			// 用户标签
