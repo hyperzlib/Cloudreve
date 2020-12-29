@@ -47,6 +47,7 @@ type group struct {
 	AllowRemoteDownload  bool   `json:"allowRemoteDownload"`
 	AllowArchiveDownload bool   `json:"allowArchiveDownload"`
 	ShareDownload        bool   `json:"shareDownload"`
+	ShareModify          bool   `json:"shareModify"`
 	CompressEnabled      bool   `json:"compress"`
 	WebDAVEnabled        bool   `json:"webdav"`
 }
@@ -113,6 +114,7 @@ func BuildUser(user model.User) User {
 			AllowRemoteDownload:  user.Group.OptionsSerialized.Aria2,
 			AllowArchiveDownload: user.Group.OptionsSerialized.ArchiveDownload,
 			ShareDownload:        user.Group.OptionsSerialized.ShareDownload,
+			ShareModify:          user.Group.OptionsSerialized.ShareModify,
 			CompressEnabled:      user.Group.OptionsSerialized.ArchiveTask,
 			WebDAVEnabled:        user.Group.WebDAVEnabled,
 		},
